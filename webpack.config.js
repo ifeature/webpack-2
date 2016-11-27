@@ -1,10 +1,20 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  context: __dirname + '/frontend',
+  context: path.resolve(__dirname, 'frontend'),
   entry: './app.js',
+  //watch: true,
+  // resolve: {
+  //   modulesDirectories: ['node_modules']
+  // },
+  resolve: {
+    modules: [
+      'node_modules'
+    ]
+  },
   devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -16,28 +26,43 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel',
+        loader: 'babel-loader',
         query: {
           presets: ['es2015']
         }
       },
       {
         test: /legacy\.js$/,
-        loader: 'imports?user=>{name: "Artem"}!exports?sayHi'
+        loaders: [
+          'imports-loader?user=>{name: "Artem"}',
+          'exports-loader?sayHi'
+        ]
       },
+      // {
+      //   test: /\.styl$/,
+      //   loader: 'style-loader!css-loader!autoprefixer-loader?browsers=last 2 versions!stylus-loader?resolve url'
+      // },
       {
         test: /\.styl$/,
-        loader: 'style!css!autoprefixer?browsers=last 2 versions!stylus?resolve url'
+        loader: ExtractTextWebpackPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader!autoprefixer-loader?browsers=last 2 versions!stylus-loader?resolve url'})
       },
       {
         test: /\.css$/,
-        loader: 'style!css'
+        loaders: [
+          'style-loader',
+          'css-loader'
+        ]
       },
       {
         test: /\.(png|jpe?g|svg|ttf|eot|woff|woff2)$/,
-        loader: 'file?name=./assets/[path][name].[ext]'
+        loader: 'file-loader?name=./assets/[path][name].[ext]'
       },
-      {test: /\.html$/, loader: 'raw'}
+      {
+        test: /\.hbs/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'handlebars-loader'
+      },
+      {test: /\.html$/, loader: 'raw-loader'}
     ]
   },
   plugins: [
@@ -46,17 +71,18 @@ module.exports = {
       $: 'jquery'
     }),
     new HtmlWebpackPlugin({
-        template: 'index.html',
-        inject: 'body',
-        hash: true
+      template: 'index.html',
+      inject: 'body',
+      hash: true
     }),
+    new ExtractTextWebpackPlugin('bundle.css'),
     new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
-      host: 'localhost',
-      port: 8081,
-      inline: true,
-      hot: true,
-      contentBase: __dirname + '/build'
+    host: 'localhost',
+    port: 8081,
+    inline: true,
+    hot: true,
+    contentBase: __dirname + '/build'
   }
 };
