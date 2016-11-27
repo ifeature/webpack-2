@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-var LiveReloadPlugin = require('webpack-livereload-plugin');
 
 module.exports = {
   context: __dirname + '/frontend',
@@ -9,7 +8,7 @@ module.exports = {
   devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'build'),
-    publicPath: '/assets/',
+    publicPath: '', //assets
     filename: '[name].js'
   },
   module: {
@@ -28,15 +27,15 @@ module.exports = {
       },
       {
         test: /\.styl$/,
-        loader: 'style!css!stylus?resolve url'
+        loader: 'style!css!autoprefixer?browsers=last 2 versions!stylus?resolve url'
       },
       {
         test: /\.css$/,
         loader: 'style!css'
       },
       {
-        test: /\.(png|jpg|svg|ttf|eot|woff|woff2)$/,
-        loader: 'file?name=[path][name].[ext]'
+        test: /\.(png|jpe?g|svg|ttf|eot|woff|woff2)$/,
+        loader: 'file?name=./assets/[path][name].[ext]'
       },
       {test: /\.html$/, loader: 'raw'}
     ]
@@ -51,13 +50,13 @@ module.exports = {
         inject: 'body',
         hash: true
     }),
-    new webpack.HotModuleReplacementPlugin(),
-    new LiveReloadPlugin()
+    new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
       host: 'localhost',
       port: 8081,
       inline: true,
-      hot: true
+      hot: true,
+      contentBase: __dirname + '/build'
   }
 };

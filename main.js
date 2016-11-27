@@ -63,7 +63,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "8c30d2bef90e7fe668c8"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "b0aa77161ceccb634139"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/
@@ -632,7 +632,7 @@
 	
 	
 	// module
-	exports.push([module.id, "body {\n  font-family: sans-serif;\n  background-image: url(" + __webpack_require__(4) + ");\n  background-repeat: no-repeat;\n  background-size: auto 100%;\n  height: 100vh;\n}\n", ""]);
+	exports.push([module.id, "body {\n  font-family: sans-serif;\n  background-image: url(" + __webpack_require__(4) + ");\n}\n", ""]);
 	
 	// exports
 
@@ -697,7 +697,7 @@
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "./assets/files/11.jpg";
+	module.exports = __webpack_require__.p + "files/11.png";
 
 /***/ },
 /* 5 */
